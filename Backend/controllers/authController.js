@@ -140,7 +140,7 @@ export async function handleLogin(req, res) {
       .cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "None",
+        sameSite: "strict",
         maxAge: 2 * 60 * 60 * 1000,
       })
 
@@ -1006,5 +1006,58 @@ export const deletePost = async (req, res) => {
   } catch (error) {
     console.error("Error deleting post:", error);
     res.status(500).json({ message: "Server error while deleting post" });
+  }
+};
+
+export const updatePost = async (req, res) => {
+  const { postId } = req.params;
+  const { uniqueId, content, hashtags, removeImage, isEdited } = req.body;
+  console.log(isEdited);
+
+  try {
+    const post = await userPost.findById(postId);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    if (post.uniqueId.toString() !== uniqueId) {
+      return res
+        .status(403)
+        .json({ message: "You can only edit your own post" });
+    }
+
+    const createdAt = new Date(post.createdAt);
+    const now = new Date();
+    const diffInMinutes = (now - createdAt) / (1000 * 60);
+    if (diffInMinutes > 30) {
+      return res
+        .status(403)
+        .json({ message: "Editing window has expired (30 minutes)" });
+    }
+
+    // Update fields
+    if (content) post.content = content;
+    if (hashtags) {
+      post.hashtags =
+        typeof hashtags === "string"
+          ? hashtags.split(" ").filter((tag) => tag.trim() !== "")
+          : hashtags;
+    }
+
+    if (removeImage === "true") {
+      post.postImage = null;
+    }
+    if (isEdited === "true") {
+      post.isEdited = "true";
+    }
+
+    if (req.file) {
+      const uploaded = await uploadToCloudinary(req.file.buffer, "post_pics");
+      post.postImage = uploaded.secure_url;
+    }
+
+    await post.save();
+    res.status(200).json(post);
+  } catch (error) {
+    console.error("Edit error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };

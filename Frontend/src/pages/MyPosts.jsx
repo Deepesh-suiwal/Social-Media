@@ -13,8 +13,10 @@ import instance from "../axiosConfig";
 import EmojiPicker from "emoji-picker-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const MyPosts = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [currentUserID, setCurrentUserID] = useState(null);
@@ -124,6 +126,23 @@ const MyPosts = () => {
     }
   };
 
+  const handleEditClick = (post) => {
+    console.log(post);
+
+    navigate("/app/post", {
+      state: {
+        isEditing: true,
+        post: {
+          content: post.content,
+          hashtags: post.hashtags.join(", "),
+          postImageUrl: post.postImage,
+
+          postId: post._id,
+        },
+      },
+    });
+  };
+
   return (
     <div className="min-h-screen mt-10 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
       <ToastContainer />
@@ -203,6 +222,14 @@ const MyPosts = () => {
                     </div>
 
                     <div className="relative">
+                      <h2 className="font-bold text-white text-lg hover:text-purple-300 transition-colors cursor-pointer">
+                        {item.isEdited && (
+                          <span className="text-sm text-gray-400">
+                            (Edited)
+                          </span>
+                        )}
+                      </h2>
+
                       <button
                         onClick={() =>
                           setOpenOptionsPostId((prev) =>
@@ -215,21 +242,25 @@ const MyPosts = () => {
                       </button>
 
                       {openOptionsPostId === item._id && (
-                        <div className="absolute right-0 top-10 w-36 bg-white/5 backdrop-blur-xl border border-white/20 rounded-xl shadow-xl z-30 overflow-hidden">
+                        <div className="absolute right-0 top-15 w-36 bg-white/5 backdrop-blur-xl border border-white/20 rounded-xl shadow-xl z-30 overflow-hidden">
+                          {Date.now() - new Date(item.createdAt).getTime() <
+                            30 * 60 * 1000 && (
+                            <button
+                              onClick={() => {
+                                setOpenOptionsPostId(null);
+                                handleEditClick(item);
+                              }}
+                              className="w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-white/10 transition font-bold"
+                            >
+                              Edit Post
+                            </button>
+                          )}
+
+                          {/* Delete is always shown */}
                           <button
                             onClick={() => {
                               setOpenOptionsPostId(null);
-                              // TODO: trigger edit modal or redirect to edit screen
-                              alert("Edit feature coming soon!");
-                            }}
-                            className="w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-white/10 transition font-bold"
-                          >
-                            Edit Post
-                          </button>
-                          <button
-                            onClick={() => {
-                              setOpenOptionsPostId(null);
-                              handleDeletePost(item._id); // You'll implement this function below
+                              handleDeletePost(item._id);
                             }}
                             className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition font-bold"
                           >

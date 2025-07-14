@@ -12,6 +12,7 @@ import {
   linkedinAuthorization,
   likePost,
   commentOnPost,
+  updatePost,
 } from "../controllers/authController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -27,6 +28,12 @@ router.post("/google/callback", googleAuthorization);
 router.post("/linkedin/callback", linkedinAuthorization);
 router.put("/profile", protect, upload.single("profilePic"), updateProfile);
 router.post("/shareData", protect, upload.single("postImage"), handleShareData);
+router.put(
+  "/editPost/:postId",
+  protect,
+  upload.single("postImage"),
+  updatePost
+);
 router.post("/like/:postId", likePost);
 router.post("/comment/:postId", commentOnPost);
 

@@ -13,6 +13,7 @@ import {
   rejectRequest,
   removeConnection,
   sendFriendRequest,
+ 
 } from "../controllers/authController.js";
 import { checkToken, protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
@@ -31,6 +32,7 @@ router.put("/reject/:requestId", protect, rejectRequest);
 router.put("/remove/connection/:requestId", protect, removeConnection);
 router.get("/myPosts/:requestId", protect, displayMyPosts);
 router.delete("/delete/post/:postId", protect, deletePost);
+
 
 router.get("/check-username", findUserName);
 router.get("/logout", handleLogout);

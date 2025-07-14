@@ -25,6 +25,10 @@ const userPostSchema = new mongoose.Schema(
     profilePic: {
       type: String,
     },
+    isEdited: {
+      type: Boolean,
+      default: false,
+    },
 
     likes: [
       {

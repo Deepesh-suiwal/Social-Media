@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import Register from "../models/register.js";
 
 export const protect = async (req, res, next) => {
-  
   const { token } = req.cookies;
 
   if (!token) {
