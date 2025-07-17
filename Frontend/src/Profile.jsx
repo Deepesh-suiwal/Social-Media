@@ -95,11 +95,11 @@ function Profile() {
       setMessage("Error checking username");
     }
   };
-  useEffect(() => {
-    if (firstTimeSignIn === true) {
-      navigate("/app/Home");
-    }
-  }, [firstTimeSignIn, navigate]);
+  // useEffect(() => {
+  //   if (firstTimeSignIn === true) {
+  //     navigate("/app/Home");
+  //   }
+  // }, [firstTimeSignIn, navigate]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -169,6 +169,7 @@ function Profile() {
       setIsLoading(true);
       const res = await instance.put("/user/profile", data);
       console.log(res);
+
       if (res.data?.user?.firstTimeSignIn) {
         setFirstTimeSignIn(true);
       }
@@ -261,7 +262,7 @@ function Profile() {
                 <p className="mt-4 text-white/70 text-sm">
                   Click to upload your profile picture
                 </p>
-                {!firstTimeSignIn == null && firstTimeSignIn && (
+                {firstTimeSignIn !== null && firstTimeSignIn !== true && (
                   <Link to={"/app/my-posts"}>
                     <button
                       type="button"

@@ -30,9 +30,11 @@ function Login() {
     try {
       console.log("Login submitted:", formData);
       const res = await instance.post("/user/login", formData);
+
       if (res.status === 201) {
         if (res.data?.user?.firstTimeSignIn === true) {
           setUser(true);
+          
           navigate("/app/displayPosts");
         } else {
           setTimeout(() => {
