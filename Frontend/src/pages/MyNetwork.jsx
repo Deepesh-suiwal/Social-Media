@@ -19,6 +19,7 @@ function MyNetwork() {
     setLoading(true);
     try {
       const userRes = await instance.get("/api/users/me");
+
       const mainUser = userRes.data;
       setUserId(mainUser.uniqueId);
       await fetchFriendData(mainUser.uniqueId);
@@ -34,6 +35,7 @@ function MyNetwork() {
     try {
       const response = await instance.get(`/api/users/request/${userId}`);
       if (response?.data?.connections) {
+        console.log(response?.data?.connections);
         await fetchRequestDetail(response?.data?.connections);
       }
     } catch (error) {
@@ -46,9 +48,12 @@ function MyNetwork() {
       const promises = connectionArray.map((id) =>
         instance.get(`/api/users/all-request/${id}`)
       );
+
       const responses = await Promise.all(promises);
+
       const connectionData = responses.map((res) => res.data);
       const reverseConnectionData = [...connectionData].reverse();
+
       setUserConnection(reverseConnectionData);
     } catch (error) {
       console.error("Error fetching request details:", error);

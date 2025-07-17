@@ -20,7 +20,6 @@ import { useUserContext } from "./context/UserContext.jsx";
 function Profile() {
   const navigate = useNavigate();
   const { firstTimeSignIn, setFirstTimeSignIn } = useUserContext();
-  console.log(firstTimeSignIn);
   const [userDetail, setUserDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
@@ -101,11 +100,6 @@ function Profile() {
       setMessage("Error checking username");
     }
   };
-  // useEffect(() => {
-  //   if (firstTimeSignIn === true) {
-  //     navigate("/app/Home");
-  //   }
-  // }, [firstTimeSignIn, navigate]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -178,6 +172,8 @@ function Profile() {
 
       if (res.data?.user?.firstTimeSignIn) {
         setFirstTimeSignIn(true);
+
+        navigate("/app/displayPosts");
       }
     } catch (err) {
       console.error("Update failed:", err);

@@ -36,7 +36,6 @@ function Login() {
         if (res.data?.user?.firstTimeSignIn === true) {
           setUser(true);
 
-          console.log(firstTimeSignIn);
           navigate("/app/displayPosts");
         } else {
           setTimeout(() => {
