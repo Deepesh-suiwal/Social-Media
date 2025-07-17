@@ -103,7 +103,7 @@ const HomePage = () => {
   if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
-    <div className="px-4 md:px-10 pt-10 mt-9  pb-5 w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white">
+    <div className="px-4 md:px-10 pb-19 pt-10 mt-9   w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white">
       <ToastContainer />
 
       {/* Header */}

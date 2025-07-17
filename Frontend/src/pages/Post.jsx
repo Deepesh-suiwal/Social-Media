@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
 import instance from "../axiosConfig.js";
-import { Camera, Hash, Send, User, Sparkles, Heart, Star } from "lucide-react";
+import {
+  Camera,
+  Hash,
+  Send,
+  User,
+  Sparkles,
+  Heart,
+  Smile,
+  Star,
+} from "lucide-react";
+import { useRef } from "react";
+import EmojiPicker from "emoji-picker-react";
 
 const Post = () => {
   const [content, setContent] = useState("");
@@ -12,6 +23,24 @@ const Post = () => {
   const [userName, setUserName] = useState(null);
   const [profilepic, setProfilePic] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiRef = useRef(null);
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        emojiRef.current &&
+        !emojiRef.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     async function fetchUser() {
@@ -112,18 +141,47 @@ const Post = () => {
             {/* Content Input */}
             <div className="relative group">
               <textarea
-                className="w-full p-6 min-h-[130px]  bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-2xl resize-none text-white placeholder-white/50 shadow-lg hover:shadow-xl hover:bg-white/15 focus:border-blue-400/50 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 group-focus-within:scale-[1.02]"
+                className="w-full p-6 min-h-[130px] bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-2xl resize-none text-white placeholder-white/50 shadow-lg hover:shadow-xl hover:bg-white/15 focus:border-blue-400/50 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 group-focus-within:scale-[1.02]"
                 placeholder="What's on your mind? Share something amazing..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
               />
+
+              {/* Footer: Character count + Emoji button */}
               <div className="absolute bottom-4 right-4 flex items-center space-x-2">
                 <span className="text-xs text-white/60 bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
                   {content.length} characters
                 </span>
-                <Heart className="w-4 h-4 text-pink-400/60" />
+
+                {/* Emoji Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowEmojiPicker((prev) => !prev)}
+                  ref={buttonRef}
+                  className="p-1 rounded-full hover:bg-white/10 transition"
+                >
+                  <Smile className="w-5 h-5 text-yellow-400/80" />
+                </button>
               </div>
+
+              {/* Emoji Picker */}
+              {showEmojiPicker && (
+                <div
+                  ref={emojiRef}
+                  className="absolute z-50 top-10  right-0 sm:right-6 md:right-10 lg:right-14"
+                >
+                  <div className="max-h-[250px] sm:max-h-[300px] md:max-h-[400px] overflow-y-auto rounded-xl shadow-2xl">
+                    <EmojiPicker
+                      onEmojiClick={(emojiData) =>
+                        setContent((prev) => prev + emojiData.emoji)
+                      }
+                      theme="dark"
+                      autoFocusSearch={false}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Image Preview */}

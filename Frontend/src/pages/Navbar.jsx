@@ -57,16 +57,18 @@ const Navbar = () => {
         <div className="max-w-6xl mx-auto px-4 relative">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
+             <Link to={"/app/displayPosts"}>
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300 hover:scale-105 transform">
                 <Sparkles className="w-6 h-6 text-white animate-pulse" />
               </div>
-              <Link to={"/app/displayPosts"}>
+             
                 <span className="hidden md:block text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
                   SocialHub
                 </span>
-              </Link>
+             
             </div>
+             </Link>
 
             {/* Desktop Search */}
             <div className="hidden md:flex flex-1 max-w-md mx-8">

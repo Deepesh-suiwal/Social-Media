@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import instance from "./axiosConfig";
 import EmojiPicker from "emoji-picker-react";
+import { useRef } from "react";
 
 const DisplayPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -24,18 +25,27 @@ const DisplayPosts = () => {
   const [activeCommentPostId, setActiveCommentPostId] = useState(null);
   const [commentText, setCommentText] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.target.closest(".relative")) {
-        setOpenShareMenuId(null);
+    const handleClickOutside = (event) => {
+      if (emojiRef.current && !emojiRef.current.contains(event.target)) {
+        setShowEmojiPicker(false);
       }
     };
-    document.addEventListener("click", handleClickOutside);
+
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [showEmojiPicker]);
+
+  
 
   useEffect(() => {
     const fetchUserAndConnections = async () => {
@@ -399,16 +409,21 @@ const DisplayPosts = () => {
 
                           {/* Emoji Picker */}
                           {showEmojiPicker && (
-                            <div className="absolute z-50 bottom-16 right-3 cursor-pointer">
-                              <EmojiPicker
-                                onEmojiClick={(emojiData) =>
-                                  setCommentText(
-                                    (prev) => prev + emojiData.emoji
-                                  )
-                                }
-                                theme="dark"
-                                autoFocusSearch={false}
-                              />
+                            <div
+                              ref={emojiRef}
+                              className="absolute z-50 bottom-20 right-0 sm:right-6 md:right-10 lg:right-14 cursor-pointer"
+                            >
+                              <div className="max-h-[250px] rounded-xl sm:max-h-[300px] md:max-h-[400px] overflow-y-auto">
+                                <EmojiPicker
+                                  onEmojiClick={(emojiData) =>
+                                    setCommentText(
+                                      (prev) => prev + emojiData.emoji
+                                    )
+                                  }
+                                  theme="dark"
+                                  autoFocusSearch={false}
+                                />
+                              </div>
                             </div>
                           )}
                         </div>

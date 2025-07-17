@@ -84,7 +84,7 @@ function MyNetwork() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900">
+      <div className="flex items-center  justify-center min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900">
         <div className="text-center py-20">
           <div className="relative">
             <div className="w-16 h-16 border-4 border-purple-400/20 rounded-full mx-auto mb-6"></div>
@@ -97,7 +97,7 @@ function MyNetwork() {
   }
 
   return (
-    <div className="px-4 md:px-10 mt-9 pt-10 w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white">
+    <div className="px-4 md:px-10 mt-9 pb-15 pt-10 w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white">
       <ToastContainer />
 
       {/* Header */}
