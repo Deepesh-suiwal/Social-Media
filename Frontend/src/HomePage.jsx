@@ -100,36 +100,36 @@ const HomePage = () => {
     );
   }
 
-  if (error) return <div>{error}</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
-    <div className="pl-[5%] pt-10 pb-5 w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white mt-10">
+    <div className="px-4 md:px-10 pt-10 mt-9  pb-5 w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white">
       <ToastContainer />
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl">
-          <Sparkles className="w-6 h-6 text-white" />
+      <div className="flex  sm:flex-row sm:items-center gap-3 mb-6">
+        <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl w-fit ">
+          <Sparkles className="w-6 h-6 text-white  " />
         </div>
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
             All Profiles
           </h1>
-          <p className="text-slate-400 mt-1">
+          <p className="text-slate-400 mt-1 text-sm sm:text-base">
             Discover people and grow your network
           </p>
         </div>
       </div>
 
-      {/* Profiles List Styled like Notification Cards */}
-      <ul className="space-y-4 flex flex-wrap gap-4 mt-10">
+      {/* Profiles List */}
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
         {profiles.map((profile, index) => {
           const profileId = profile.uniqueId;
 
           return (
             <div
               key={index}
-              className="w-[260px] h-[300px] rounded-xl shadow-md border border-gray-400 relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900"
+              className="rounded-xl shadow-md border border-gray-400 relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 overflow-hidden"
             >
               <div className="h-[90px] rounded-t-xl relative">
                 <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-10 w-[80px] h-[80px] rounded-full bg-gray-200 border-3 border-white overflow-hidden">
@@ -141,18 +141,20 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <div className="pt-14 px-4 text-center">
-                <p className="font-semibold text-white text-[16px]">
+              <div className="pt-14 px-4 pb-16 text-center">
+                <p className="font-semibold text-white text-base sm:text-lg">
                   {profile.userName || profile.name}
                 </p>
-                <p className="text-gray-400 text-sm mt-1">{profile.email}</p>
+                <p className="text-gray-400 text-sm mt-1 break-words">
+                  {profile.email}
+                </p>
               </div>
 
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
                 <button
                   onClick={() => sendRequest(profileId)}
                   disabled={isRequestPending(profileId)}
-                  className={`text-[15px] border py-1.5 px-5 rounded-2xl cursor-pointer transition-all duration-300 ${
+                  className={`text-sm sm:text-[15px] border py-1.5 px-5 rounded-2xl transition-all duration-300 ${
                     isRequestPending(profileId)
                       ? "text-yellow-400 border-yellow-400 opacity-60 cursor-not-allowed"
                       : "text-blue-400 border-blue-400 hover:bg-blue-700 hover:text-white"
@@ -164,7 +166,7 @@ const HomePage = () => {
             </div>
           );
         })}
-      </ul>
+      </div>
 
       {/* Empty State */}
       {profiles.length === 0 && !error && (

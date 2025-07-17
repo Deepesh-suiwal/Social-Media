@@ -3,6 +3,7 @@ import instance from "../axiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { Sparkles, MessageCircle, UserX, Network } from "lucide-react";
 import { Link } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyNetwork() {
   const [userConnection, setUserConnection] = useState([]);
@@ -59,9 +60,7 @@ function MyNetwork() {
     try {
       const response = await instance.put(
         `/api/users/remove/connection/${requestId}`,
-        {
-          senderID: userId,
-        }
+        { senderID: userId }
       );
       if (response?.status === 200 && response?.data) {
         toast.success("Connection Removed!", {
@@ -98,30 +97,30 @@ function MyNetwork() {
   }
 
   return (
-    <div className="pl-[5%] pt-10 w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white mt-10">
+    <div className="px-4 md:px-10 mt-9 pt-10 w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white">
       <ToastContainer />
 
-      {/* Header Section similar to Notifications */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl">
+      {/* Header */}
+      <div className="flex  sm:flex-row sm:items-center gap-3 mb-6">
+        <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl w-fit ">
           <Network className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
             My Network
           </h1>
-          <p className="text-slate-400 mt-1">
+          <p className="text-slate-400  text-sm sm:text-base">
             Manage your connections and grow
           </p>
         </div>
       </div>
 
-      {/* Connection Cards like Notification cards */}
-      <ul className="space-y-4 flex flex-wrap gap-4 mt-10">
+      {/* Cards */}
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
         {userConnection.map((profile) => (
           <div
             key={profile.uniqueId}
-            className="w-[260px] h-[300px] rounded-xl shadow-md border border-gray-400 relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900"
+            className="rounded-xl shadow-md border border-gray-400 relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 overflow-hidden"
           >
             <div className="h-[90px] rounded-t-xl relative">
               <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-10 w-[80px] h-[80px] rounded-full bg-gray-200 border-3 border-white overflow-hidden">
@@ -133,21 +132,26 @@ function MyNetwork() {
               </div>
             </div>
 
-            <div className="pt-14 px-4 text-center">
-              <p className="font-semibold text-white text-[16px]">
+            <div className="pt-14 px-4 pb-16 text-center">
+              <p className="font-semibold text-white text-base sm:text-lg">
                 {profile.userName || profile.name}
               </p>
-              <p className="text-gray-400 text-sm mt-1">{profile.email}</p>
+              <p className="text-gray-400 text-sm mt-1 break-words">
+                {profile.email}
+              </p>
             </div>
 
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-              <button className="text-[15px] border py-1.5 px-4 rounded-2xl cursor-pointer text-blue-400 border-blue-400 hover:bg-blue-700 hover:text-white flex items-center gap-1">
-                <MessageCircle size={16} />
-                Chat
-              </button>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex  items-center gap-2">
+              <Link to={`/app/chat/${profile.uniqueId}`}>
+                <button className="text-sm sm:text-[15px] border py-1.5 px-4 rounded-2xl text-blue-400 border-blue-400 hover:bg-blue-700 hover:text-white flex items-center gap-1 transition-all duration-300">
+                  <MessageCircle size={16} />
+                  Chat
+                </button>
+              </Link>
+
               <button
                 onClick={() => handleRemoveConnection(profile.uniqueId)}
-                className="text-[15px] border py-1.5 px-4 rounded-2xl cursor-pointer text-red-400 border-red-400 hover:bg-red-700 hover:text-white flex items-center gap-1"
+                className="text-sm sm:text-[15px] border py-1.5 px-4 rounded-2xl text-red-400 border-red-400 hover:bg-red-700 hover:text-white flex items-center gap-1 transition-all duration-300"
               >
                 <UserX size={16} />
                 Remove
@@ -155,9 +159,9 @@ function MyNetwork() {
             </div>
           </div>
         ))}
-      </ul>
+      </div>
 
-      {/* Empty state message if no connections */}
+      {/* Empty State */}
       {userConnection.length === 0 && !error && (
         <div className="text-center py-20 mt-20">
           <div className="mb-6">
@@ -172,7 +176,7 @@ function MyNetwork() {
             Start connecting with professionals to grow your network.
           </p>
           <Link to="/app/Home">
-            <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 cursor-pointer">
+            <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300">
               Discover People
             </button>
           </Link>

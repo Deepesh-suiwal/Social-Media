@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   acceptRequest,
   deletePost,
@@ -35,5 +36,5 @@ router.delete("/delete/post/:postId", protect, deletePost);
 
 
 router.get("/check-username", findUserName);
-router.get("/logout", handleLogout);
+router.delete("/logout", handleLogout);
 export default router;

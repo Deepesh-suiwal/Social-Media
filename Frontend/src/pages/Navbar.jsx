@@ -23,12 +23,13 @@ import {
 const Navbar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState("Home");
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    console.log("first");
     try {
-      const res = await instance.get("/api/users/logout");
+      const res = await instance.delete("/api/users/logout");
 
       if (res.status == 200) {
         navigate("/");
@@ -61,9 +62,9 @@ const Navbar = () => {
                 <Sparkles className="w-6 h-6 text-white animate-pulse" />
               </div>
               <Link to={"/app/displayPosts"}>
-              <span className="hidden md:block text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                SocialHub
-              </span>
+                <span className="hidden md:block text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                  SocialHub
+                </span>
               </Link>
             </div>
 
@@ -206,21 +207,6 @@ const Navbar = () => {
               )}
             </button>
           </div>
-
-          {/* Mobile Search */}
-          <div className="md:hidden pb-4">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-white/70" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md text-white placeholder-white/70 border border-white/20 rounded-2xl 
-                  focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 transition-all duration-300"
-              />
-            </div>
-          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -228,75 +214,93 @@ const Navbar = () => {
           <div className="md:hidden border-t border-white/10 backdrop-blur-md bg-black/20 animate-in slide-in-from-top duration-300">
             <div className="px-4 py-4 space-y-2">
               {/* Home */}
-              <button
-                className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                  activeTab === "Home"
-                    ? "bg-white/20 text-white shadow-lg"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                }`}
-                onClick={() => setActiveTab("Home")}
-              >
-                <Home className="h-5 w-5" />
-                <span className="font-medium">Home</span>
-              </button>
-
-              {/* Search */}
-              <button
-                className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                  activeTab === "Search"
-                    ? "bg-white/20 text-white shadow-lg"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                }`}
-                onClick={() => setActiveTab("Search")}
-              >
-                <Search className="h-5 w-5" />
-                <span className="font-medium">Search</span>
-              </button>
+              <Link to="/app/displayPosts">
+                <button
+                  className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
+                    activeTab === "Home"
+                      ? "bg-white/20 text-white shadow-lg"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
+                  onClick={() => {
+                    setActiveTab("Home");
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <Home className="h-5 w-5" />
+                  <span className="font-medium">Home</span>
+                </button>
+              </Link>
 
               {/* Create */}
-              <button
-                className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                  activeTab === "Create"
-                    ? "bg-white/20 text-white shadow-lg"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                }`}
-                onClick={() => setActiveTab("Create")}
-              >
-                <PlusSquare className="h-5 w-5" />
-                <span className="font-medium">Create</span>
-              </button>
+              <Link to="/app/post">
+                <button
+                  className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
+                    activeTab === "Create"
+                      ? "bg-white/20 text-white shadow-lg"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
+                  // onClick={() => setActiveTab("Create")}
+                  onClick={() => {
+                    setActiveTab("Create");
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <PlusSquare className="h-5 w-5" />
+                  <span className="font-medium">Post</span>
+                </button>
+              </Link>
 
               {/* Activity */}
-              <button
-                className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                  activeTab === "Activity"
-                    ? "bg-white/20 text-white shadow-lg"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                }`}
-                onClick={() => setActiveTab("Activity")}
-              >
-                <Heart className="h-5 w-5" />
-                <span className="font-medium">Activity</span>
-              </button>
+              <Link to="/app/notification">
+                <button
+                  className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
+                    activeTab === "Activity"
+                      ? "bg-white/20 text-white shadow-lg"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
+                  // onClick={() => setActiveTab("Activity")}
+                  onClick={() => {
+                    setActiveTab("Activity");
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <Heart className="h-5 w-5" />
+                  <span className="font-medium">Notification</span>
+                </button>
+              </Link>
 
               {/* Messages */}
-              <button
-                className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                  activeTab === "Messages"
-                    ? "bg-white/20 text-white shadow-lg"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                }`}
-                onClick={() => setActiveTab("Messages")}
-              >
-                <MessageCircle className="h-5 w-5" />
-                <span className="font-medium">Messages</span>
-              </button>
+              <Link to="/app/Home">
+                <button
+                  className={`w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
+                    activeTab === "Messages"
+                      ? "bg-white/20 text-white shadow-lg"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
+                  // onClick={() => setActiveTab("Messages")}/
+                  onClick={() => {
+                    setActiveTab("Messages");
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <Users className="h-6 w-6" />
+                  <span className="font-medium">Connection</span>
+                </button>
+              </Link>
 
               {/* Profile */}
-              <button className="w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
-                <User className="h-5 w-5" />
-                <span className="font-medium">Profile</span>
-              </button>
+              <Link to="/app/profile">
+                <button
+                  className="w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300"
+                  onClick={() => {
+                    setActiveTab("profile");
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <User className="h-5 w-5" />
+                  <span className="font-medium">Profile</span>
+                </button>
+              </Link>
             </div>
           </div>
         )}
@@ -306,64 +310,72 @@ const Navbar = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-violet-600/95 via-purple-600/95 to-indigo-600/95 backdrop-blur-xl border-t border-white/10 z-50 shadow-2xl">
         <div className="flex justify-around items-center py-3">
           {/* Home */}
-          <button
-            className={`relative p-3 rounded-xl transition-all duration-300 ${
-              activeTab === "Home"
-                ? "text-white bg-white/20 shadow-lg"
-                : "text-white/70 hover:text-white hover:bg-white/10"
-            }`}
-            onClick={() => setActiveTab("Home")}
-          >
-            <Home className="h-6 w-6" />
-            {activeTab === "Home" && (
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
-            )}
-          </button>
+          <Link to="/app/displayPosts">
+            <button
+              className={`relative p-3 rounded-xl transition-all duration-300 ${
+                activeTab === "Home"
+                  ? "text-white bg-white/20 shadow-lg"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
+              }`}
+              onClick={() => setActiveTab("Home")}
+            >
+              <Home className="h-6 w-6" />
+              {activeTab === "Home" && (
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
+              )}
+            </button>
+          </Link>
 
           {/* Create */}
-          <button
-            className={`relative p-3 rounded-xl transition-all duration-300 ${
-              activeTab === "Create"
-                ? "text-white bg-white/20 shadow-lg"
-                : "text-white/70 hover:text-white hover:bg-white/10"
-            }`}
-            onClick={() => setActiveTab("Create")}
-          >
-            <PlusSquare className="h-6 w-6" />
-            {activeTab === "Create" && (
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
-            )}
-          </button>
+          <Link to="/app/post">
+            <button
+              className={`relative p-3 rounded-xl transition-all duration-300 ${
+                activeTab === "Create"
+                  ? "text-white bg-white/20 shadow-lg"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
+              }`}
+              onClick={() => setActiveTab("Create")}
+            >
+              <PlusSquare className="h-6 w-6" />
+              {activeTab === "Create" && (
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
+              )}
+            </button>
+          </Link>
 
           {/* Activity */}
-          <button
-            className={`relative p-3 rounded-xl transition-all duration-300 ${
-              activeTab === "Activity"
-                ? "text-white bg-white/20 shadow-lg"
-                : "text-white/70 hover:text-white hover:bg-white/10"
-            }`}
-            onClick={() => setActiveTab("Activity")}
-          >
-            <Heart className="h-6 w-6" />
-            {activeTab === "Activity" && (
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
-            )}
-          </button>
+          <Link to="/app/notification">
+            <button
+              className={`relative p-3 rounded-xl transition-all duration-300 ${
+                activeTab === "Activity"
+                  ? "text-white bg-white/20 shadow-lg"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
+              }`}
+              onClick={() => setActiveTab("Activity")}
+            >
+              <Heart className="h-6 w-6" />
+              {activeTab === "Activity" && (
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
+              )}
+            </button>
+          </Link>
 
           {/* Messages */}
-          <button
-            className={`relative p-3 rounded-xl transition-all duration-300 ${
-              activeTab === "Messages"
-                ? "text-white bg-white/20 shadow-lg"
-                : "text-white/70 hover:text-white hover:bg-white/10"
-            }`}
-            onClick={() => setActiveTab("Messages")}
-          >
-            <MessageCircle className="h-6 w-6" />
-            {activeTab === "Messages" && (
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
-            )}
-          </button>
+          <Link to="/app/Network">
+            <button
+              className={`relative p-3 rounded-xl transition-all duration-300 ${
+                activeTab === "Messages"
+                  ? "text-white bg-white/20 shadow-lg"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
+              }`}
+              onClick={() => setActiveTab("Messages")}
+            >
+              <Network size={20} />
+              {activeTab === "Messages" && (
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"></div>
+              )}
+            </button>
+          </Link>
 
           <button
             className="relative p-3 rounded-xl text-white/80 hover:text-white hover:bg-red-500/20 transition-all duration-300 group border border-white/20 hover:border-red-500/40"

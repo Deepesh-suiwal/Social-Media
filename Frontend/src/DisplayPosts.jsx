@@ -143,16 +143,16 @@ const DisplayPosts = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-8">
+      <div className="relative z-10 max-w-2xl mt-2 mx-auto px-4 py-8 pb-2">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Sparkles className="text-yellow-400 w-8 h-8" />
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className=" text-2xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               Social Feed
             </h1>
             <TrendingUp className="text-green-400 w-8 h-8" />
           </div>
-          <p className="text-slate-300 text-lg">
+          <p className="text-slate-300 text-[15px] md:text-lg">
             Stay connected with the latest posts and updates from our community.
           </p>
         </div>
@@ -185,7 +185,7 @@ const DisplayPosts = () => {
               return (
                 <div
                   key={index}
-                  className="backdrop-blur-xl rounded-2xl border border-white/40 hover:border-white/50 transition-all duration-500 hover:transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 group overflow-hidden"
+                  className="backdrop-blur-xl  rounded-2xl border border-white/40 hover:border-white/50 transition-all duration-500 hover:transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20 group overflow-hidden"
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between p-6 pb-4">
@@ -316,7 +316,7 @@ const DisplayPosts = () => {
                               {
                                 label: "WhatsApp",
                                 url: `https://wa.me/?text=${encodeURIComponent(
-                                  `${window.location.origin}/app/displayPosts`
+                                  ` ${window.location.origin}/app/displayPosts`
                                 )}`,
                               },
                               {

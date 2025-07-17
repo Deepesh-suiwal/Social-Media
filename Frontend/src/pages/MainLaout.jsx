@@ -5,18 +5,17 @@ import LeftSideBar from "./LeftSideBar";
 
 const MainLayout = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
+      {/* Navbar at the top */}
       <Navbar />
-      <div className="flex">
-     
-        <div className=" fixed top-[64px] w-[20%] left-0 ">
-       
-          <LeftSideBar />
-        </div>
 
-      
-        <div className="md:ml-[20%]  w-full md:w-[80%]  ">
-        
+      {/* Main layout grid below Navbar */}
+      <div className="grid grid-cols-1 md:grid-cols-[270px_1fr] flex-grow">
+        {/* Sidebar (only visible on md and up) */}
+        <LeftSideBar />
+
+        {/* Main content area */}
+        <div className="bg-[#0c0c36]  overflow-y-auto min-h-screen">
           <Outlet />
         </div>
       </div>

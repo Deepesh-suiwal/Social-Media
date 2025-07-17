@@ -144,7 +144,7 @@ const MyPosts = () => {
   };
 
   return (
-    <div className="min-h-screen mt-10 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <div className="min-h-screen pb-12 md:pb-0 mt-10 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
       <ToastContainer />
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
@@ -154,10 +154,10 @@ const MyPosts = () => {
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-8">
-        <div className="text-center mb-12">
+        <div className="text-center  mb-6 md:mb-8 lg:pb-1">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Sparkles className="text-yellow-400 w-8 h-8" />
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className=" text-3xl pt-2 md:text-3xl lg:text-5xl lg:pb-2 font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               My Posts
             </h1>
             <TrendingUp className="text-green-400 w-8 h-8" />
