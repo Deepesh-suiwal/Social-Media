@@ -339,17 +339,19 @@ function Profile() {
                       placeholder="Phone Number"
                       value={formData.phone}
                       onChange={handleChange}
+
                       pattern="\d{10}"
                       maxLength={10}
                     />
 
                     <AnimatedField
                       icon={<Calendar />}
-                      placeholder="DOB"
                       name="dob"
+                      placeholder="DOB"
                       type="date"
                       value={formData.dob}
                       onChange={handleChange}
+                      
                     />
 
                     <div className="relative group">
