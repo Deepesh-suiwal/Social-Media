@@ -345,6 +345,7 @@ function Profile() {
 
                     <AnimatedField
                       icon={<Calendar />}
+                      placeholder="DOB"
                       name="dob"
                       type="date"
                       value={formData.dob}
