@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 import instance from "./axiosConfig.js";
 import { useNavigate, Link } from "react-router-dom";
+import { useUserContext } from "./context/UserContext.jsx";
 
 function Profile() {
   const navigate = useNavigate();
+  const { firstTimeSignIn, setFirstTimeSignIn } = useUserContext();
+  console.log(firstTimeSignIn);
   const [userDetail, setUserDetail] = useState(null);
-  const [firstTimeSignIn, setFirstTimeSignIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
@@ -45,6 +47,10 @@ function Profile() {
     async function fetchUser() {
       try {
         const res = await instance.get("/api/users/me");
+
+        if (res.data.firstTimeSignIn === true) {
+          setFirstTimeSignIn(true);
+        }
         console.log(res);
         setUserDetail(res.data);
       } catch (err) {
@@ -262,7 +268,7 @@ function Profile() {
                 <p className="mt-4 text-white/70 text-sm">
                   Click to upload your profile picture
                 </p>
-                {firstTimeSignIn !== null && firstTimeSignIn !== true && (
+                {firstTimeSignIn && (
                   <Link to={"/app/my-posts"}>
                     <button
                       type="button"

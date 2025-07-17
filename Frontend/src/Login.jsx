@@ -10,6 +10,7 @@ import instance from "./axiosConfig";
 
 function Login() {
   const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -34,7 +35,8 @@ function Login() {
       if (res.status === 201) {
         if (res.data?.user?.firstTimeSignIn === true) {
           setUser(true);
-          
+
+          console.log(firstTimeSignIn);
           navigate("/app/displayPosts");
         } else {
           setTimeout(() => {

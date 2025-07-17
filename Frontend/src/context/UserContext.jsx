@@ -3,6 +3,7 @@ const UserContext = createContext();
 
 function UserProvider({ children }) {
   const [userDetail, setUserDetail] = useState(null);
+  const [firstTimeSignIn, setFirstTimeSignIn] = useState(false);
 
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -19,6 +20,8 @@ function UserProvider({ children }) {
         message,
         setMessage,
         showMessage,
+        firstTimeSignIn,
+        setFirstTimeSignIn,
       }}
     >
       {children}
