@@ -261,7 +261,7 @@ function Profile() {
                 <p className="mt-4 text-white/70 text-sm">
                   Click to upload your profile picture
                 </p>
-                {!firstTimeSignIn == null && (
+                {!firstTimeSignIn == null && firstTimeSignIn && (
                   <Link to={"/app/my-posts"}>
                     <button
                       type="button"
