@@ -45,8 +45,6 @@ const DisplayPosts = () => {
     };
   }, [showEmojiPicker]);
 
-  
-
   useEffect(() => {
     const fetchUserAndConnections = async () => {
       try {
@@ -144,6 +142,22 @@ const DisplayPosts = () => {
     }
   };
 
+  const renderHighlightedContent = (text) => {
+    if (!text) return "No content provided.";
+
+    const parts = text.split(/(#\w+)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("#")) {
+        return (
+          <span key={i} className="text-purple-400 font-semibold">
+            {part}
+          </span>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
   return (
     <div className="min-h-screen mt-10 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Background Effects */}
@@ -232,7 +246,7 @@ const DisplayPosts = () => {
                       style={{ whiteSpace: "pre-wrap" }}
                       className="text-slate-100 leading-relaxed text-lg font-medium"
                     >
-                      {item.content || "No content provided."}
+                      {renderHighlightedContent(item.content)}
                     </p>
                   </div>
 

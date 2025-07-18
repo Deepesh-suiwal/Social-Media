@@ -30,9 +30,11 @@ const Post = () => {
   const [userName, setUserName] = useState(null);
   const [profilepic, setProfilePic] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showHashtagPopup, setShowHashtagPopup] = useState(false);
+  const [hashtagQuery, setHashtagQuery] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [imageRemoved, setImageRemoved] = useState(false);
-
+  const textareaRef = useRef(null);
   const emojiRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -87,6 +89,37 @@ const Post = () => {
       setPreviewImage(URL.createObjectURL(file));
       setImageRemoved(false);
     }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "#") {
+      setShowHashtagPopup(true);
+      setHashtagQuery("");
+    } else if (showHashtagPopup) {
+      if (/^[a-zA-Z0-9_]$/.test(e.key)) {
+        setHashtagQuery((prev) => prev + e.key);
+      } else if (e.key === " " || e.key === "Enter") {
+        setShowHashtagPopup(false);
+        setHashtagQuery("");
+      }
+    }
+  };
+
+  const renderHighlightedContent = (text) => {
+    const parts = text.split(/(#\w+)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("#")) {
+        return (
+          <span key={i} className="text-blue-500 font-semibold">
+            {part}
+          </span>
+        );
+      }
+      return (
+        <span key={i} className="text-white">
+          {part}
+        </span>
+      );
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -185,15 +218,30 @@ const Post = () => {
         {/* Post Form */}
         <div className="bg-white/5 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 p-8 space-y-6 relative overflow-hidden">
           <div className="relative z-10 space-y-6">
-            {/* Content Textarea */}
-            <div className="relative group">
+            <div className="relative w-full min-h-[130px] bg-white/5 border-2 border-white/20 rounded-2xl">
+              {/* Textarea */}
+
               <textarea
-                className="w-full p-6 min-h-[130px] bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-2xl resize-none text-white placeholder-white/50 shadow-lg hover:shadow-xl hover:bg-white/15 focus:border-blue-400/50 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300"
+                ref={textareaRef}
+                className="w-full p-6 min-h-[130px] bg-transparent border-none rounded-2xl resize-none text-transparent placeholder-transparent z-10 relative caret-white focus:outline-none"
                 placeholder="What's on your mind? Share something amazing..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                onKeyDown={handleKeyDown}
                 required
               />
+
+              {/* Visible text overlay */}
+
+              <div className="absolute inset-0 z-0 p-6 whitespace-pre-wrap break-words pointer-events-none">
+                {content.length > 0 ? (
+                  renderHighlightedContent(content)
+                ) : (
+                  <span className="text-white/40">
+                    What's on your mind? Share something amazing...
+                  </span>
+                )}
+              </div>
 
               {/* Emoji Picker Toggle */}
               <div className="absolute bottom-4 right-4 flex items-center space-x-2">

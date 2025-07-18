@@ -143,6 +143,22 @@ const MyPosts = () => {
     });
   };
 
+  const renderHighlightedContent = (text) => {
+    if (!text) return "No content provided.";
+
+    const parts = text.split(/(#\w+)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("#")) {
+        return (
+          <span key={i} className="text-purple-400 font-semibold">
+            {part}
+          </span>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
   return (
     <div className="min-h-screen pb-12 md:pb-0 mt-10 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
       <ToastContainer />
@@ -277,7 +293,7 @@ const MyPosts = () => {
                       style={{ whiteSpace: "pre-wrap" }}
                       className="text-slate-100 leading-relaxed text-lg font-medium"
                     >
-                      {item.content || "No content provided."}
+                      {renderHighlightedContent(item.content)}
                     </p>
                   </div>
 
