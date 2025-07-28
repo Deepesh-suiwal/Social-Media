@@ -78,6 +78,8 @@ function Profile() {
   }, [userDetail]);
 
   const checkUsername = async () => {
+    console.log("first");
+
     if (!username.trim()) {
       setMessage("");
       setAvailable(null);
@@ -86,9 +88,10 @@ function Profile() {
 
     try {
       const res = await instance.get(
-        `/api/users/check-username?username=${username}`
+        `/api/users/check-username/username/${username}`
       );
-      if (res.data.available) {
+
+      if (res?.data?.available) {
         setAvailable(true);
         setMessage("Username is available");
       } else {
@@ -339,7 +342,6 @@ function Profile() {
                       placeholder="Phone Number"
                       value={formData.phone}
                       onChange={handleChange}
-
                       pattern="\d{10}"
                       maxLength={10}
                     />
@@ -351,7 +353,6 @@ function Profile() {
                       type="date"
                       value={formData.dob}
                       onChange={handleChange}
-                      
                     />
 
                     <div className="relative group">

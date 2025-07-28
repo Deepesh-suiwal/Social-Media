@@ -28,7 +28,7 @@ const LeftSideBar = () => {
   async function fetchFriendData(userId) {
     try {
       const response = await instance.get(`/api/users/request/${userId}`);
-      // console.log(response.data)
+      console.log(response.data)
       setNotification(response?.data?.receivedRequests);
     } catch (error) {
       console.error("Error fetching friend data:", error);

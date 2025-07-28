@@ -60,7 +60,7 @@ export async function handleRegister(req, res) {
 }
 
 export async function verifyEmail(req, res) {
-  console.log("first");
+  // console.log("first");
 
   const { token } = req.params;
   console.log(token);
@@ -102,6 +102,7 @@ export async function verifyEmail(req, res) {
 }
 
 export const getUserById = async (req, res) => {
+  // console.log("first");
   try {
     const user = await Profile.findOne({ uniqueId: req.params.userId }).select(
       "-password"
@@ -113,7 +114,7 @@ export const getUserById = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
-};
+}
 
 export async function handleLogin(req, res) {
   console.log("first");
@@ -630,7 +631,12 @@ export async function findAllPosts(req, res) {
 }
 
 export async function findUserName(req, res) {
-  const { username } = req.query;
+
+
+  console.log("Deepesh");
+
+  // const { username } = req.query;
+  const { username } = req.params;
 
   if (!username || username.trim() === "") {
     return res

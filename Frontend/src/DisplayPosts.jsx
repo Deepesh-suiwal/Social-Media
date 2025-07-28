@@ -30,6 +30,15 @@ const DisplayPosts = () => {
 
   const recognitionRef = useRef(null);
 
+  async function singleProfile(userId) {
+    try {
+      const response = await instance.get(`/api/users/${userId}`);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching friend data:", error);
+    }
+  }
+
   const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -246,7 +255,10 @@ const DisplayPosts = () => {
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between p-6 pb-4">
-                    <div className="flex items-center gap-4">
+                    <div
+                      className="flex items-center gap-4"
+                      onClick={() => singleProfile(item.uniqueId)}
+                    >
                       <img
                         src={item.profilePic || "/default-avatar.png"}
                         alt="Profile"

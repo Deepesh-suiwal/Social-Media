@@ -34,7 +34,6 @@ router.put("/remove/connection/:requestId", protect, removeConnection);
 router.get("/myPosts/:requestId", protect, displayMyPosts);
 router.delete("/delete/post/:postId", protect, deletePost);
 
-
-router.get("/check-username", findUserName);
+router.get("/check-username/username/:username", findUserName);
 router.delete("/logout", handleLogout);
 export default router;
