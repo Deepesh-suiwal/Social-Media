@@ -93,9 +93,9 @@ const DisplayPosts = () => {
         setIsLoading(true);
 
         const res = await instance.get("/api/users/me");
-        const userId = res.data.uniqueId;
+        const userId = res?.data?.uniqueId;
         setCurrentUserID(userId); // Set user ID
-        setuserName(res.data.userName);
+        setuserName(res?.data?.userName);
 
         const connectionRes = await instance.get(
           `/api/users/request/${userId}`
@@ -117,13 +117,13 @@ const DisplayPosts = () => {
   async function fetchAllPosts(connections, currentUserId) {
     try {
       const allPostsRes = await instance.get("/api/users/allposts");
-      const posts = allPostsRes.data;
+      const posts = allPostsRes?.data;
 
       const friendPosts = [];
       const latestNonFriendPostsMap = {};
 
       for (const post of posts) {
-        const userId = post.uniqueId;
+        const userId = post?.uniqueId;
 
         // ✅ Correct filtering — skip posts by current user
         if (userId === currentUserId) continue;

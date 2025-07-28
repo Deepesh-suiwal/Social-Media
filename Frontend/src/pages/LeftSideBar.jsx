@@ -16,25 +16,23 @@ const LeftSideBar = () => {
   async function fetchUserAndProfiles() {
     try {
       const userRes = await instance.get("/api/users/me");
-      const mainUser = userRes.data;
-      // console.log(mainUser)
-      await fetchFriendData(mainUser.uniqueId);
+      const mainUser = userRes?.data;
+
+      await fetchFriendData(mainUser?.uniqueId);
     } catch (err) {
       console.error(err);
-      // setError("Failed to fetch profiles.");
     }
   }
 
   async function fetchFriendData(userId) {
     try {
       const response = await instance.get(`/api/users/request/${userId}`);
-      console.log(response.data)
-      setNotification(response?.data?.receivedRequests);
+      console.log(response.data);
+      setNotification(response?.data?.receivedRequests); 
     } catch (error) {
       console.error("Error fetching friend data:", error);
     }
   }
-  console.log(notification.length);
 
   return (
     <div className="hidden md:pt-17 md:flex md:w-[270px] h-screen bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-900 text-white p-6 shadow-2xl sticky top-0 z-40 backdrop-blur-xl bg-opacity-80 overflow-hidden">
@@ -112,11 +110,11 @@ const LeftSideBar = () => {
             <div className="relative">
               <Heart className="h-6 w-6 group-hover:rotate-12 transition-transform duration-300" />
 
-              {notification.length > 0 && (
-                <span className="absolute -top-3 -right-3 bg-gray-200 text-blue-700 text-[10px] px-2 py-0.5 rounded-full shadow-sm">
-                  {notification.length}
-                </span>
-              )}
+                {notification?.length > 0 && (
+                  <span className="absolute -top-3 -right-3 bg-gray-200 text-blue-700 text-[10px] px-2 py-0.5 rounded-full shadow-sm">
+                    {notification.length}
+                  </span>
+                )}
             </div>
 
             <span>Notification</span>
