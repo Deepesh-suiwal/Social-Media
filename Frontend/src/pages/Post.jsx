@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import instance from "../axiosConfig.js";
 
+import { IoMicSharp } from "react-icons/io5";
 import {
   Camera,
   Hash,
@@ -34,12 +35,50 @@ const Post = () => {
   const [hashtagQuery, setHashtagQuery] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [imageRemoved, setImageRemoved] = useState(false);
+  const recognitionRef = useRef(null);
   const textareaRef = useRef(null);
   const emojiRef = useRef(null);
   const buttonRef = useRef(null);
 
   const editingData = location.state?.post || null;
   const isEditing = location.state?.isEditing || false;
+
+  const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech Recognition not supported in this browser");
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+        console.log("Speech recognition started");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setContent((prev) => prev + " " + transcript);
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+      };
+
+      recognition.onend = () => {
+        console.log("Speech recognition ended");
+      };
+
+      recognitionRef.current = recognition;
+    }
+
+    recognitionRef.current.start();
+  };
 
   // Load user data
   useEffect(() => {
@@ -244,7 +283,7 @@ const Post = () => {
               </div>
 
               {/* Emoji Picker Toggle */}
-              <div className="absolute bottom-4 right-4 flex items-center space-x-2">
+              <div className="absolute bottom-4 right-4 flex items-center space-x-2 z-10">
                 <span className="text-xs text-white/60 bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
                   {content.length} characters
                 </span>
@@ -256,6 +295,15 @@ const Post = () => {
                 >
                   <Smile className="w-5 h-5 text-yellow-400/80" />
                 </button>
+                <div>
+                  <button
+                    onClick={startListening}
+                    className="text-white cursor-pointer hover:text-blue-400 transition-all duration-200 p-1 rounded-full"
+                    title="Click to start voice input"
+                  >
+                    <IoMicSharp size={22} />
+                  </button>
+                </div>
               </div>
 
               {showEmojiPicker && (

@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import instance from "./axiosConfig";
 import EmojiPicker from "emoji-picker-react";
 import { useRef } from "react";
+import { IoMicSharp } from "react-icons/io5";
 
 const DisplayPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -26,6 +27,38 @@ const DisplayPosts = () => {
   const [commentText, setCommentText] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiRef = useRef(null);
+
+  const recognitionRef = useRef(null);
+
+  const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Speech Recognition is not supported in this browser.");
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setCommentText((prev) => prev + " " + transcript);
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+      };
+
+      recognitionRef.current = recognition;
+    }
+
+    recognitionRef.current.start();
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -393,16 +426,24 @@ const DisplayPosts = () => {
                             onChange={(e) => setCommentText(e.target.value)}
                             placeholder="Write a comment..."
                             rows={2}
-                            className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/5 text-white resize-none focus:outline-none focus:ring-2 focus:ring-purple-400"
+                            className="w-full px-4 py-4 rounded-xl border border-white/20 bg-white/5 text-white resize-none focus:outline-none focus:ring-2 focus:ring-purple-400"
                           />
 
                           {/* Emoji Button */}
                           <button
                             type="button"
                             onClick={() => setShowEmojiPicker((prev) => !prev)}
-                            className="absolute bottom-3 right-20 text-purple-300 hover:text-purple-200 cursor-pointer"
+                            className="absolute bottom-3 right-18 text-purple-300 hover:text-purple-200 cursor-pointer"
                           >
                             😊
+                          </button>
+
+                          <button
+                            onClick={startListening}
+                            className=" absolute bottom-2 right-24 text-white cursor-pointer hover:text-blue-400 transition-all duration-200 p-1 rounded-full"
+                            title="Click to start voice input"
+                          >
+                            <IoMicSharp size={20} />
                           </button>
 
                           {/* Send Button */}

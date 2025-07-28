@@ -9,6 +9,7 @@ import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { sendVerificationEmail } from "../email.js";
+import nodemailer from "nodemailer";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -102,7 +103,9 @@ export async function verifyEmail(req, res) {
 
 export const getUserById = async (req, res) => {
   try {
-    const user = await Profile.findOne({ uniqueId: req.params.userId }).select("-password");
+    const user = await Profile.findOne({ uniqueId: req.params.userId }).select(
+      "-password"
+    );
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
@@ -111,8 +114,6 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
-
 
 export async function handleLogin(req, res) {
   console.log("first");
@@ -647,7 +648,6 @@ export async function findUserName(req, res) {
 }
 
 export function handleLogout(req, res) {
-  
   res.clearCookie("token", {
     httpOnly: true,
     secure: true,
@@ -743,6 +743,41 @@ export const sendFriendRequest = async (req, res) => {
         { upsert: true, new: true }
       ),
     ]);
+
+    // send email
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.sendgrid.net",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "apikey", // this is always "apikey"
+        pass: process.env.SENDGRID_API_KEY, // store your key in .env
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.FROM_EMAIL, // ✅ must be verified with SendGrid
+      to: receiverProfile.email, // ✅
+      subject: "You've received a friend request!",
+      text: `Hello ${receiverProfile.name}, ${senderProfile.name} sent you a friend request.`,
+      html: `<p><strong>${senderProfile.name}</strong> has sent you a friend request.</p> <br>  
+      <a 
+      href="https://social-media-1-mfvc.onrender.com/app/notification"
+      style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+      ">
+      Accept
+    </a> `,
+    };
+
+    await transporter.sendMail(mailOptions);
 
     // ✅ Prevent duplicate requests
     const alreadySent = senderDoc.sentRequests.some(

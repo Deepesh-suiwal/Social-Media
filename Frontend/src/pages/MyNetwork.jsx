@@ -74,9 +74,10 @@ function MyNetwork() {
   }
 
   async function handleRemoveConnection(requestId) {
+  
     try {
       const response = await instance.put(
-       ` /api/users/remove/connection/${requestId}`,
+       `/api/users/remove/connection/${requestId}`,
         {
           senderID: userId,
         }
