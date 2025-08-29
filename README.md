@@ -23,69 +23,71 @@ A full-stack social media platform where users can sign up, post updates, like, 
 🌎 CORS-enabled APIs
 
 🛠️ Tech Stack
-Frontend
 
-React / HTML / CSS / JavaScript (your choice)
+🎨 Frontend
 
-Backend
+⚛️ React (with Vite) – For building fast, modern UI
+🎨 Tailwind CSS / CSS Modules – For styling
+🛠 ESLint + Plugins – For linting & code quality
+⚡ Vite – Development server & build tool
 
-Node.js + Express.js
+🖥 Backend
 
-MongoDB + Mongoose
+🟢 Node.js + Express.js
 
-JWT for authentication
+🍃 MongoDB + Mongoose
 
-Multer + Cloudinary for file uploads
+🔑 JWT for authentication
 
-Nodemailer / SendGrid for email
+📂 Multer + Cloudinary for file uploads
 
-Socket.io for real-time communication
+📧 Nodemailer / SendGrid for email services
 
-
-
-
+🔌 Socket.io for real-time communication
 
 
 📦 Backend Routes
 
-- Auth Routes → /api/auth
+🔑 Auth Routes → /api/auth
 
-- POST /register → Register user
+➕ POST /register → Register user
 
-- POST /login → Login user
+🔑 POST /login → Login user
 
-- GET /verify/:token → Verify email
+✅ GET /verify/:token → Verify email
 
-- User Routes → /api/users
+👤 User Routes → /api/users
 
-- GET /:id → Get user profile
+👀 GET /:id → Get user profile
 
-- PUT /update → Update profile
+✏️ PUT /update → Update profile
 
-- POST /follow/:id → Follow user
+🤝 POST /follow/:id → Follow user
 
-- POST /unfollow/:id → Unfollow user
+❌ POST /unfollow/:id → Unfollow user
 
-- Post Routes → /api/posts
+📝 Post Routes → /api/posts
 
-- POST / → Create post
+➕ POST / → Create post
 
-- GET / → Get all posts
+📖 GET / → Get all posts
 
-- PUT /:id → Update post
+✏️ PUT /:id → Update post
 
-- DELETE /:id → Delete post
 
-- POST /:id/like → Like post
 
-- POST /:id/comment → Comment on post
+🗑 DELETE /:id → Delete post
 
-- Upload Routes → /api/upload
+❤️ POST /:id/like → Like post
 
-- POST / → Upload image
+💬 POST /:id/comment → Comment on post
 
-- Chat Routes → /api/chats
+📸 Upload Routes → /api/upload
 
-- GET /:chatId → Get messages
+⬆️ POST / → Upload image
 
-- POST /:chatId → Send message
+💬 Chat Routes → /api/chats
+
+📩 GET /:chatId → Get messages
+
+✉️ POST /:chatId → Send message
