@@ -27,40 +27,51 @@ const DisplayPosts = () => {
   const [commentText, setCommentText] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiRef = useRef(null);
+  const [profile, setProfile] = useState(false);
+  const [getSingleProfile, setSingleProfile] = useState([]);
 
   const recognitionRef = useRef(null);
 
   async function singleProfile(userId) {
+    setProfile(true);
     try {
       const response = await instance.get(`/api/users/${userId}`);
       console.log(response.data);
+      setSingleProfile(response.data);
     } catch (error) {
       console.error("Error fetching friend data:", error);
     }
   }
 
-  const startListening = () => {
+    const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Speech Recognition is not supported in this browser.");
+      alert("Speech Recognition not supported in this browser");
       return;
     }
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
+      recognition.lang = "en-IN"; // ✅ Listen for Hindi
       recognition.continuous = false;
       recognition.interimResults = false;
 
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        setCommentText((prev) => prev + " " + transcript);
+      recognition.onresult = async (event) => {
+        const hindiText = event.results[0][0].transcript;
+        console.log("Hindi speech recognized:", hindiText);
+
+          setCommentText((prev) => prev + " " + hindiText);
+
       };
 
       recognition.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
+      };
+
+      recognition.onend = () => {
+        console.log("Speech recognition ended");
       };
 
       recognitionRef.current = recognition;
@@ -200,6 +211,112 @@ const DisplayPosts = () => {
     });
   };
 
+  if (profile) {
+    return (
+      <div className="min-h-screen mt-10 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden text-white px-6 py-10">
+        <div className="max-w-3xl mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-lg">
+          <button
+            onClick={() => setProfile(false)}
+            className="mb-6 text-sm text-purple-300 underline hover:text-purple-200"
+          >
+            ← Back to Feed
+          </button>
+
+          <div>
+            {/* Profile Header */}
+            <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
+              <img
+                src={getSingleProfile.profilePic}
+                alt="Profile"
+                className="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-xl"
+              />
+              <div>
+                <h1 className="text-3xl font-bold capitalize">
+                  {getSingleProfile.name}
+                </h1>
+                <p className="text-slate-300 text-sm mt-1">
+                  {getSingleProfile.email}
+                </p>
+                <p className="text-slate-400 text-sm">
+                  @{getSingleProfile.username || "jatinverma"}
+                </p>
+              </div>
+            </div>
+
+            {/* Bio */}
+            {getSingleProfile.bio && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-purple-300 mb-2">
+                  Bio
+                </h2>
+                <p className="text-slate-200 whitespace-pre-line">
+                  {getSingleProfile.bio}
+                </p>
+              </div>
+            )}
+
+            {/* Basic Info */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-purple-300">Gender</h3>
+                <p className="text-slate-200 capitalize">
+                  {getSingleProfile.gender}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-purple-300">Date of Birth</h3>
+                <p className="text-slate-200">
+                  {getSingleProfile.dob &&
+                    new Date(getSingleProfile.dob).toLocaleDateString("en-GB", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-purple-300">Phone</h3>
+                <p className="text-slate-200">{getSingleProfile.phone}</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-purple-300">Email</h3>
+                <p className="text-slate-200">{getSingleProfile.email}</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-purple-300">City</h3>
+                <p className="text-slate-200">{getSingleProfile.city}</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-purple-300">State</h3>
+                <p className="text-slate-200">{getSingleProfile.state}</p>
+              </div>
+
+              <div className="sm:col-span-2">
+                <h3 className="font-semibold text-purple-300">Address</h3>
+                <p className="text-slate-200 whitespace-pre-line">
+                  {getSingleProfile.address}
+                </p>
+              </div>
+            </div>
+
+            {/* Provider Info */}
+            <div className="mt-6 text-slate-400 text-sm">
+              Signed in via:{" "}
+              <span className="text-white">
+                {getSingleProfile.oauthProvider}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen mt-10 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Background Effects */}
@@ -298,11 +415,11 @@ const DisplayPosts = () => {
                   {/* Image */}
                   {item.postImage && (
                     <div className="px-6 pb-4">
-                      <div className="rounded-2xl overflow-hidden">
+                      <div className="rounded-2xl overflow-hidden border-1 border-gray-500">
                         <img
                           src={item.postImage}
                           alt="Post"
-                          className="w-full h-80 object-cover"
+                          className="w-full h-80 object-contain "
                         />
                       </div>
                     </div>

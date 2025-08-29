@@ -46,6 +46,7 @@ const Post = () => {
   const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
+
     if (!SpeechRecognition) {
       alert("Speech Recognition not supported in this browser");
       return;
@@ -53,17 +54,16 @@ const Post = () => {
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
+      recognition.lang = "en-IN"; // ✅ Listen for Hindi
       recognition.continuous = false;
       recognition.interimResults = false;
 
-      recognition.onstart = () => {
-        console.log("Speech recognition started");
-      };
+      recognition.onresult = async (event) => {
+        const hindiText = event.results[0][0].transcript;
+        console.log("Hindi speech recognized:", hindiText);
 
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        setContent((prev) => prev + " " + transcript);
+          setContent((prev) => prev + " " + hindiText);
+
       };
 
       recognition.onerror = (event) => {

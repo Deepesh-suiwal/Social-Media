@@ -5,21 +5,18 @@ import friendRequest from "../models/connection.js";
 import mongoose from "mongoose";
 import axios from "axios";
 
-import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { sendVerificationEmail } from "../email.js";
 import nodemailer from "nodemailer";
+
+import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
-function generateToken(dataId) {
-  return jwt.sign({ id: dataId }, process.env.JWT_SECRET);
-}
 
 function uploadToCloudinary(buffer, folder) {
   return new Promise((resolve, reject) => {
@@ -32,6 +29,10 @@ function uploadToCloudinary(buffer, folder) {
     );
     stream.end(buffer);
   });
+}
+
+function generateToken(dataId) {
+  return jwt.sign({ id: dataId }, process.env.JWT_SECRET);
 }
 export async function handleRegister(req, res) {
   const { email, name, password } = req.body;
@@ -114,7 +115,7 @@ export const getUserById = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
-}
+};
 
 export async function handleLogin(req, res) {
   console.log("first");
@@ -631,8 +632,6 @@ export async function findAllPosts(req, res) {
 }
 
 export async function findUserName(req, res) {
-
-
   console.log("Deepesh");
 
   // const { username } = req.query;
