@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import instance from "../axiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { Sparkles, MessageCircle, UserX, Network } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function MyNetwork() {
   const [userConnection, setUserConnection] = useState([]);

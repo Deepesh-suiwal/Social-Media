@@ -153,6 +153,7 @@ export async function handleLogin(req, res) {
       await userDetail.save();
     }
     console.log(userDetail);
+    
     return res
       .cookie("token", token, {
         httpOnly: true,
