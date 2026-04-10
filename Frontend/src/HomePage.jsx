@@ -228,7 +228,7 @@ const HomePage = () => {
 
       {/* Header */}
       <div className="flex  sm:flex-row sm:items-center gap-3 mb-6">
-        <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl w-fit ">
+        {/* <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl w-fit ">
           <Sparkles className="w-6 h-6 text-white  " />
         </div>
         <div>
@@ -238,7 +238,7 @@ const HomePage = () => {
           <p className="text-slate-400 mt-1 text-sm sm:text-base">
             Discover people and grow your network
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* Profiles List */}

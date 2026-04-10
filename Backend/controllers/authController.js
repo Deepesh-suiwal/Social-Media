@@ -25,7 +25,7 @@ function uploadToCloudinary(buffer, folder) {
       (err, result) => {
         if (result) resolve(result);
         else reject(err);
-      }
+      },
     );
     stream.end(buffer);
   });
@@ -42,17 +42,41 @@ export async function handleRegister(req, res) {
   if (userExists && userExists.oauthProvider === "local") {
     return res.status(409).json({ message: "Email already in use" });
   }
-  const Registration_Token = jwt.sign(
-    { email, name, password },
-    process.env.JWT_SECRET,
-    { expiresIn: "10m" }
-  );
+  // const Registration_Token = jwt.sign(
+  //   { email, name, password },
+  //   process.env.JWT_SECRET,
+  //   { expiresIn: "10m" }
+  // );
 
   try {
-    await sendVerificationEmail(email, Registration_Token);
-    return res
-      .status(200)
-      .json({ message: `Verification email sent to ${email}` });
+    const Semail = email.toLowerCase();
+
+    const userExists = await Register.findOne({
+      email: Semail,
+      oauthProvider: "local",
+    });
+
+    if (userExists) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    const newData = new Register({
+      email: Semail,
+      name,
+      password,
+      oauthProvider: "local",
+    });
+
+    console.log("Creating new user:", newData);
+    await newData.save();
+    // console.log("New user saved:", newData);
+
+    return res.status(201).json({ message: "User registered successfully!" });
+
+    // await sendVerificationEmail(email, Registration_Token);
+    // return res
+    //   .status(200)
+    //   .json({ message: `Verification email sent to ${email}` });
   } catch (err) {
     if (err.name === "TokenExpiredError") {
       return res.status(400).send("Token has expired");
@@ -106,7 +130,7 @@ export const getUserById = async (req, res) => {
   // console.log("first");
   try {
     const user = await Profile.findOne({ uniqueId: req.params.userId }).select(
-      "-password"
+      "-password",
     );
     if (!user) {
       return res.status(404).json({ message: "User not found." });
@@ -153,7 +177,7 @@ export async function handleLogin(req, res) {
       await userDetail.save();
     }
     console.log(userDetail);
-    
+
     return res
       .cookie("token", token, {
         httpOnly: true,
@@ -192,7 +216,7 @@ export async function updateProfile(req, res) {
     if (req.file) {
       const uploaded = await uploadToCloudinary(
         req.file.buffer,
-        "profile_pics"
+        "profile_pics",
       );
       console.log(uploaded);
       profileFields.profilePic = uploaded.secure_url;
@@ -204,7 +228,7 @@ export async function updateProfile(req, res) {
         ...profileFields,
         firstTimeSignIn: firstTimeSignIn,
       },
-      { new: true }
+      { new: true },
     );
     console.log(updatedProfile);
 
@@ -292,7 +316,7 @@ export async function githubAuthorization(req, res) {
           code,
           redirect_uri: redirectUri,
         }),
-      }
+      },
     );
 
     const tokenData = await tokenResponse.json();
@@ -339,12 +363,12 @@ export async function githubAuthorization(req, res) {
           Authorization: `token ${access_token}`,
           Accept: "application/vnd.github.v3+json",
         },
-      }
+      },
     );
     const events = await eventsResponse.json();
 
     const primaryEmailObj = emails.find(
-      (emailObj) => emailObj.primary && emailObj.verified
+      (emailObj) => emailObj.primary && emailObj.verified,
     );
     const email =
       primaryEmailObj?.email ||
@@ -453,7 +477,7 @@ export async function googleAuthorization(req, res) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     const userInfo = await userRes.json();
@@ -540,7 +564,7 @@ export async function linkedinAuthorization(req, res) {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      }
+      },
     );
 
     const accessToken = tokenResponse.data.access_token;
@@ -553,7 +577,7 @@ export async function linkedinAuthorization(req, res) {
           Authorization: `Bearer ${accessToken}`,
           Accept: "application/json",
         },
-      }
+      },
     );
 
     const userInfo = userInfoResponse.data;
@@ -741,12 +765,12 @@ export const sendFriendRequest = async (req, res) => {
       friendRequest.findOneAndUpdate(
         { uniqueId: senderId },
         { $setOnInsert: { uniqueId: senderId } },
-        { upsert: true, new: true }
+        { upsert: true, new: true },
       ),
       friendRequest.findOneAndUpdate(
         { uniqueId: receiverId },
         { $setOnInsert: { uniqueId: receiverId } },
-        { upsert: true, new: true }
+        { upsert: true, new: true },
       ),
     ]);
 
@@ -787,7 +811,7 @@ export const sendFriendRequest = async (req, res) => {
 
     // ✅ Prevent duplicate requests
     const alreadySent = senderDoc.sentRequests.some(
-      (id) => id.toString() === receiverId.toString()
+      (id) => id.toString() === receiverId.toString(),
     );
 
     if (alreadySent) {
@@ -888,20 +912,20 @@ export const acceptRequest = async (req, res) => {
 
     // ✅ Remove receiver from sender's sentRequests and receivedRequests
     senderUserDetail.sentRequests = senderUserDetail.sentRequests.filter(
-      (id) => !id.equals(receiverObjectId)
+      (id) => !id.equals(receiverObjectId),
     );
     senderUserDetail.receivedRequests =
       senderUserDetail.receivedRequests.filter(
-        (id) => !id.equals(receiverObjectId)
+        (id) => !id.equals(receiverObjectId),
       );
 
     // ✅ Remove sender from receiver's receivedRequests
     receiverUserDetail.sentRequests = receiverUserDetail.sentRequests.filter(
-      (id) => !id.equals(senderObjectId)
+      (id) => !id.equals(senderObjectId),
     );
     receiverUserDetail.receivedRequests =
       receiverUserDetail.receivedRequests.filter(
-        (id) => !id.equals(senderObjectId)
+        (id) => !id.equals(senderObjectId),
       );
 
     // ✅ Add each other to connections if not already there
@@ -956,20 +980,20 @@ export const rejectRequest = async (req, res) => {
       return res.status(404).json({ message: "Sender user not found" });
     }
     senderUserDetail.sentRequests = senderUserDetail.sentRequests.filter(
-      (id) => !id.equals(receiverObjectId)
+      (id) => !id.equals(receiverObjectId),
     );
     senderUserDetail.receivedRequests =
       senderUserDetail.receivedRequests.filter(
-        (id) => !id.equals(receiverObjectId)
+        (id) => !id.equals(receiverObjectId),
       );
 
     // ✅ Remove sender from receiver's receivedRequests
     receiverUserDetail.sentRequests = receiverUserDetail.sentRequests.filter(
-      (id) => !id.equals(senderObjectId)
+      (id) => !id.equals(senderObjectId),
     );
     receiverUserDetail.receivedRequests =
       receiverUserDetail.receivedRequests.filter(
-        (id) => !id.equals(senderObjectId)
+        (id) => !id.equals(senderObjectId),
       );
     await senderUserDetail.save();
     await receiverUserDetail.save();
@@ -1009,7 +1033,7 @@ export const removeConnection = async (req, res) => {
       return res.status(404).json({ message: "Sender user not found" });
     }
     senderUserDetail.sentRequests = senderUserDetail.sentRequests.filter(
-      (id) => !id.equals(receiverObjectId)
+      (id) => !id.equals(receiverObjectId),
     );
     if (
       senderUserDetail.connections.some((id) => id.equals(receiverObjectId))

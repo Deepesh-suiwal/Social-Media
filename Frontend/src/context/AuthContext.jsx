@@ -9,7 +9,6 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     checkToken();
-    
   }, [user]);
 
 

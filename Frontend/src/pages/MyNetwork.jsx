@@ -122,17 +122,17 @@ function MyNetwork() {
 
       {/* Header Section similar to Notifications */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl">
+        {/* <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl">
           <Network className="w-6 h-6 text-white" />
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
             My Network
           </h1>
           <p className="text-slate-400 mt-1">
             Manage your connections and grow
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* Connection Cards like Notification cards */}

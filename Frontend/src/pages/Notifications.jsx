@@ -127,7 +127,7 @@ function Notifications() {
 
       {/* Header */}
       <div className="flex  sm:flex-row sm:items-center gap-3 mb-6">
-        <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl w-fit ">
+        {/* <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl w-fit ">
           <Sparkles className=" md:w-6  md:h-6 text-white" />
         </div>
         <div>
@@ -137,7 +137,7 @@ function Notifications() {
           <p className="text-slate-400  text-sm sm:text-base">
             See who wants to connect with you
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* Friend Requests List */}
