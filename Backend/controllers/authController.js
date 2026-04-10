@@ -774,40 +774,40 @@ export const sendFriendRequest = async (req, res) => {
       ),
     ]);
 
-    // send email
+    // // send email
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.sendgrid.net",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "apikey", // this is always "apikey"
-        pass: process.env.SENDGRID_API_KEY, // store your key in .env
-      },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   host: "smtp.sendgrid.net",
+    //   port: 587,
+    //   secure: false,
+    //   auth: {
+    //     user: "apikey", // this is always "apikey"
+    //     pass: process.env.SENDGRID_API_KEY, // store your key in .env
+    //   },
+    // });
 
-    const mailOptions = {
-      from: process.env.FROM_EMAIL, // ✅ must be verified with SendGrid
-      to: receiverProfile.email, // ✅
-      subject: "You've received a friend request!",
-      text: `Hello ${receiverProfile.name}, ${senderProfile.name} sent you a friend request.`,
-      html: `<p><strong>${senderProfile.name}</strong> has sent you a friend request.</p> <br>  
-      <a 
-      href="https://social-media-1-mfvc.onrender.com/app/notification"
-      style="
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007BFF;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-      ">
-      Accept
-    </a> `,
-    };
+    // const mailOptions = {
+    //   from: process.env.FROM_EMAIL, // ✅ must be verified with SendGrid
+    //   to: receiverProfile.email, // ✅
+    //   subject: "You've received a friend request!",
+    //   text: `Hello ${receiverProfile.name}, ${senderProfile.name} sent you a friend request.`,
+    //   html: `<p><strong>${senderProfile.name}</strong> has sent you a friend request.</p> <br>  
+    //   <a 
+    //   href="https://social-media-1-mfvc.onrender.com/app/notification"
+    //   style="
+    //     display: inline-block;
+    //     padding: 10px 20px;
+    //     background-color: #007BFF;
+    //     color: #ffffff;
+    //     text-decoration: none;
+    //     border-radius: 5px;
+    //     font-weight: bold;
+    //   ">
+    //   Accept
+    // </a> `,
+    // };
 
-    await transporter.sendMail(mailOptions);
+    // await transporter.sendMail(mailOptions);
 
     // ✅ Prevent duplicate requests
     const alreadySent = senderDoc.sentRequests.some(

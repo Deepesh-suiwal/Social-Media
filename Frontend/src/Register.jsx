@@ -43,7 +43,7 @@ function Register() {
         { name, email, password },
         { withCredentials: true }
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert(response.data.message);
         navigate("/");
       }

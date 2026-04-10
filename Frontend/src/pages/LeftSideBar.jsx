@@ -63,9 +63,9 @@ const LeftSideBar = () => {
 
       {/* Navigation Menu */}
       <div className="relative z-10 w-full">
-        <h2 className="text-3xl font-bold mb-1 text-center border-b border-white/10 pb-4 tracking-wide bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+        {/* <h2 className="text-3xl font-bold mb-1 text-center border-b border-white/10 pb-4 tracking-wide bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
           Menu
-        </h2>
+        </h2> */}
 
         <nav className="flex flex-col gap-5 text-lg font-medium">
           <SidebarLink

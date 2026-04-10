@@ -129,15 +129,15 @@ function Notifications() {
       <div className="flex  sm:flex-row sm:items-center gap-3 mb-6">
         {/* <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl w-fit ">
           <Sparkles className=" md:w-6  md:h-6 text-white" />
-        </div>
+        </div> */}
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
             Notifications
           </h1>
-          <p className="text-slate-400  text-sm sm:text-base">
+          {/* <p className="text-slate-400  text-sm sm:text-base">
             See who wants to connect with you
-          </p>
-        </div> */}
+          </p> */}
+        </div>
       </div>
 
       {/* Friend Requests List */}
