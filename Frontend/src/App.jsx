@@ -10,7 +10,7 @@ import LinkedinCallback from "./components/LinkedinCallback";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProvider from "./context/AuthContext";
 import Setting from "./pages/Setting";
-import Connection from "./pages/Connection";
+// import Connection from "./pages/Connection";
 import Post from "./pages/Post";
 
 import Notifications from "./pages/Notifications";
@@ -94,10 +94,10 @@ const router = createBrowserRouter([
         path: "post",
         element: <Post />,
       },
-      {
-        path: "connection",
-        element: <Connection />,
-      },
+      // {
+      //   path: "connection",
+      //   element: <Connection />,
+      // },
       {
         path: "notification",
         element: <Notifications />,
